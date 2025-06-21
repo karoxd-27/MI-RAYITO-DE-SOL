@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>¡Feliz Mes!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(to bottom, #fce3ec, #fdfbfb);
+      color: #444;
+    }
+    header {
+      background-color: #ffcce0;
+      text-align: center;
+      padding: 2rem;
+      animation: fadeIn 2s ease;
+    }
+    header h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 3rem;
+      color: #a05283;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      background-color: #ffeaf1;
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    nav a {
+      color: #d770a2;
+      text-decoration: none;
+      font-weight: bold;
+      transition: transform 0.2s;
+    }
+    nav a:hover {
+      transform: scale(1.1);
+    }
+    section {
+      padding: 3rem 2rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      animation: slideUp 1.2s ease;
+    }
+    section:nth-child(even) {
+      background-color: #fff6fa;
+    }
+    h2 {
+      color: #b85585;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      font-size: 1.2rem;
+      text-align: center;
+      max-width: 700px;
+      margin-bottom: 2rem;
+    }
+    img, iframe {
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .gif {
+      width: 300px;
+      height: auto;
+      margin: 1rem;
+    }
+    footer {
+      background-color: #ffcce0;
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 1rem;
+    }
+    button {
+      background-color: #d770a2;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background-color: #a05283;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+        @keyframes slideUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* ❤️ Corazoncito flotante encima del día actual */
+    .heart-floating {
+      position: relative;
+    }
+
+    .heart-floating::after {
+      content: "💗";
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: floatUp 2s infinite ease-in-out;
+      font-size: 1.2rem;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translate(-50%, 0); opacity: 0.8; }
+      50% { transform: translate(-50%, -10px); opacity: 1; }
+      100% { transform: translate(-50%, -20px); opacity: 0; }
+    }
+    /* 💬 Estilo para burbujas con frases secretas */
+.burbuja {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.burbuja::after {
+  content: attr(data-msg);
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ffe0ec;
+  color: #a05283;
+  padding: 0.6rem 1rem;
+  border-radius: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  font-size: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  z-index: 10;
+}
+
+.burbuja:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-5px);
+}
+/* 📖 Estilos del libro */
+.libro-container {
+  position: relative;
+  width: 90%;
+  max-width: 600px;
+  margin: 2rem auto;
+  background: #fff6fa;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.pagina {
+  display: none;
+  animation: aparecer 0.5s ease;
+}
+
+.pagina.active {
+  display: block;
+}
+
+#anterior, #siguiente {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #d770a2;
+  border: none;
+  color: white;
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#anterior:hover, #siguiente:hover {
+  background-color: #a05283;
+}
+
+#anterior { left: -1.5rem; }
+#siguiente { right: -1.5rem; }
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.reproductor {
+  background: #ffeaf1;
+  border: 2px solid #f8cce0;
+  padding: 1.5rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  max-width: 500px;
+  margin: auto;
+  text-align: left;
+}
+
+.reproductor .portada {
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.reproductor button {
+  background-color: #d770a2;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.reproductor button:hover {
+  background-color: #a05283;
+}
+.frase-suave {
+  font-size: 1.2rem;
+  color: #b85585;
+  text-align: center;
+  margin: 2rem auto 1rem;
+  animation: aparecerSuave 1.5s ease-out both;
+}
+
+@keyframes aparecerSuave {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+  </style>
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>FELIZ MES MI RAYITO DE SOL</h1>
+  </header>
+  <p class="frase-suave">La gracia de esto es que la vayas escuchando mientras vas leyendo hasta donde hay un video.</p>
+
+  <section id="musiquita">
+  <div class="reproductor" style="margin-top: rem;">
+    <img src="https://i.pinimg.com/originals/fe/c6/52/fec652e8690b6bc68020e36ef6475cf4.gif" alt="Portada" class="portada">
+    <div>
+      <p><strong>GOLDEN BROWN</strong><br><small>THE STRANGLERS</small></p>
+      <audio id="miAudio" src="img/Audio de WhatsApp 2025-06-20 a las 20.58.10_ec39359c.mp3"></audio>
+      <button onclick="reproducirCancion()" id="btnPlay">▶️ Reproducir</button>
+    </div>
+  </div>
+</section>
+
+  <nav>
+    <a href="#inicio">Inicio</a>
+    <a href="#recuerdos">Recuerdos</a>
+    <a href="#frases">Frases</a>
+    <a href="#sorpresa">Sorpresa</a>
+    <a href="#galeria">Galería</a>
+    <a href="#mensaje">Mensaje</a>
+    <a href="#libro">Nuestro Libro</a>
+
+  </nav>
+  <section id="inicio">
+    <h2>¡Hola, <span class="burbuja" data-msg="¡Mi vida hermosa! 💕">mi cielito bello</span>!</h2>
+<p>Hoy celebramos un mes de tar juntos...
+    <p>Hoy celebramos un mes de tar juntos (nuestro primer mes), sonrisas, historias, tonterías, y una conexión que no deja de crecer. Este pequeño apartado es un pequeño rincón para recordarte cuánto te amo, osea, se que me amas más, pero quiero que de a poquito vayas sintiendo lo que puede brindarte, asi sea sencillo y simple.</p>
+    <img src="https://i.pinimg.com/originals/1e/7b/cd/1e7bcd2c629f77de3b40de535640dd1d.gif" alt="Te amo gif" class="gif burbuja" data-msg="¡Te amo infinitooo! 💗🌌" />
+
+  </section>
+  <section id="recuerdos">
+    <h2>Nuestros Momentos</h2>
+    <p>Aquí va uno de los momentos importantes con tigo, que aun que no hubiese sido compartido, lo vivimos tras una pantalla, el dia que escuchaste una de las canciones más importantes para mi y que ahora hace parte de ti tambien... ¡Gracias por cada segundo!</p>
+   <iframe src="img/Video de WhatsApp 2025-06-20 a las 20.13.34_3f4c3df4.mp4" width="560" height="315" allowfullscreen></iframe>
+  </section>
+  <section id="frases">
+    <h2>Palabras para Ti </h2>
+    <p>"Agradecerte primero que todo, por seguir ahi, sin importar que, sin importar como, solo agradecerte por ser ese hombre que esta a mi lado acompañandome en mis altas y bajas"</p>
+    <p>"Se que es nuestro primer mes, y que no soy muy buena expresandome en palabras habladas en momentos asi, pero se escribir, y aun que no sea mucho, quiero que sepas que cada palabra escrita es con amor, cariño y sobre todo, un agradecimiento muy grande.>
+    <p>"No necesito un cuento de hadas por ahora, mientras lo siga viviendo a tu lado cualquier escrito de fantasia no sera comparado con la realidad vivida hasta ahora."</p>
+  </section>
+  <section id="sorpresa">
+    <h2>Sorpresita </h2>
+    <p>Dale clic al botón y sas</p>
+    <button onclick="mostrarSorpresa()">Haz clic aquí</button>
+    <div id="sorpresaBox" style="display:none; margin-top:2rem;">
+      <img src="https://i.pinimg.com/originals/cf/e2/66/cfe2664925719a18a078c8c1b7552b9d.gif" class="gif" alt="Sorpresa gif" />
+      <img src="https://i.pinimg.com/originals/9c/c3/59/9cc359123cb3ec2568b6c2a0cefa0e83.gif" class="gif" alt="Sorpresa gif" />
+      <img src="https://i.pinimg.com/originals/89/7e/c9/897ec9db259b979c023b213ea7e25e46.gif" class="gif" alt="Sorpresa gif" />
+      <p style="font-size:1.5rem; color:#b85585;">ti amuuuu mutooooo y se que aveces tienes muchos  miedos asi como yo tambien los tengo, más sin embargo quiero que te sientas seguro meno, yo me estoy esforzando de verdad, por tu.</p>
+    </div>
+  </section>
+  <section id="galeria">
+    <h2>Galería </h2>
+    <p>Aquí unas imágenes que me hacen sonreír cada vez que las veo.</p>
+    <img src="img/Imagen de WhatsApp 2025-06-20 a las 17.38.42_b24f3990.jpg" alt="Foto 1" />
+    <img src="img/Imagen de WhatsApp 2025-06-20 a las 17.46.01_ce3607f0.jpg" alt="Foto 2" />
+    <img src="img/Imagen de WhatsApp 2025-06-20 a las 17.47.05_5164d2fb.jpg" alt="Foto 3" />
+    <p style="font-size:1.5rem; color:#b85585;">Son imagenes que por ahora son simples, pero que cada una a mi parecer tienen un gran significado para mi, el cual te lo resumo, por que se que entenderas perfectamente el significado de cada una: la primera es el dia que te lleve a una parte de perquira luego de tu accidente, pues queria que te despistaras con algo, la segunda como olvidarla si fue el dia que deje mis meros zapatos en los terrenos de tus welitos y la tercera tu bonito detalle por mi cumpleaños......</p>
+    </div>
+    <section id="libro">
+  <h2>Nuestro Libro</h2>
+  <div class="libro-container">
+    <div class="pagina" id="pagina-1">
+      <h3>Capítulo 1</h3>
+      <p>Todo comenzó poq  un dia el muchacho conocio a esta muchacha pendeja con tapabocas y por más que aveces me diga que no yio se que me ficho desde ese dia, asi hubiese pasado de todo, el sabia que me habia fichado para tar con el, y la veda se siente wonito como ese ombe dijo sacasas quiero estar con ella amarla y adorarla, es muy wonito, y si se que tubimos mas bajas que altas en esos momentos, pero miramene aqui haciendote la linea 273 de mi codigo para sacarte una sonrisa, solo se que los tiempos son perfectos, y si estar con tigo es mi destino, dejame decirte que karol estara en tu destino tambien. .</p>
+    </div>
+    <div class="pagina" id="pagina-2">
+      <h3>Capítulo 2</h3>
+      <p>Entre bromas y bromas, llego ese 20 de Mayo del 2025 que luego de hablar, compartir y besarnos si ser nada.... llego el dia en el que me dijo oficialmente (quieres ser mi novia) y yio toda bugueada dije gui, y ahora me tiene toda nanorada de a poquitos..</p>
+    </div>
+    <div class="pagina" id="pagina-1">
+      <h3>Capítulo 3</h3>
+      <p>Y ya viendo un poquito más a futuro, sin hablarte paja y sin tentar un destino incierto, solo dire que en la mayoria de casos uno es el responsable de su propio destino, asi que si a mi se me apetese quedarme con tigo toda la vida, lo hare, espero cumplir junto a ti aquellas palabras alguna vez habladas incluso las que nunca se an hablado, quiero que sepas que aqui tienes a Karol nanorada y que no se va a cansar de nada, y que si llega a ser necesario esperarte lo hare.....</p>
+    </div>
+    <button id="anterior">←</button>
+    <button id="siguiente">→</button>
+  </div>
+</section>
+
+  </section>
+  <section id="calendario" style="text-align: center;">
+  <h2 style="color: #b85585;">Nuestro primer mesesito</h2>
+  <div id="calendar" style="margin-top:1rem;"></div>
+</section>
+
+<script>
+  const calendarContainer = document.getElementById("calendar");
+
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth();
+  const date = today.getDate();
+
+  const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  let calendarHTML = `
+    <h3 style="color:#a05283; font-size:1.5rem; margin-bottom:1rem;">
+      ${monthNames[month]} ${year}
+    </h3>
+    <table style="margin:auto; border-collapse:collapse;">
+      <tr>
+        <th>Dom</th><th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th>
+      </tr><tr>
+  `;
+
+  for (let i = 0; i < firstDay; i++) {
+    calendarHTML += "<td></td>";
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const isToday = day === date;
+    const clase = isToday ? 'class="heart-floating" style="background-color:#ffe0ec; color:#d63e87; font-weight:bold; border-radius:10px; box-shadow:0 0 10px rgba(255, 105, 180, 0.3); cursor:pointer;" id="hoy"' : '';
+    calendarHTML += `<td ${clase}>${isToday ? '❤️ ' + day : day}</td>`;
+    if ((day + firstDay) % 7 === 0) calendarHTML += "</tr><tr>";
+  }
+
+  calendarHTML += "</tr></table>";
+
+  calendarHTML += `
+    <div id="mensajeHoy" style="display:none; margin-top:1rem; font-size:1.3rem; color:#d63e87; animation: fadeIn 1s ease;">
+      Primes mes.... tu y yio.... jijijiji nunca lo imagine pero espero este mesesito se tripleque, se multiplique y que en un futuro digas, el primer mes esta pendeja me hizo una pagina toda estupida pero con mucho amor.
+    </div>
+  `;
+
+  calendarContainer.innerHTML = calendarHTML;
+
+  const celdaHoy = document.getElementById("hoy");
+  const mensaje = document.getElementById("mensajeHoy");
+
+  if (celdaHoy && mensaje) {
+    celdaHoy.addEventListener("click", () => {
+      mensaje.style.display = "block";
+    });
+  }
+</script>
+<section id="cuenta-regresiva" style="text-align: center; padding: 3rem 2rem;">
+  <h2 style="color: #b85585;">Cuenta regresiva para el próximo mesecito poq se me apetese</h2>
+  <p id="contador" style="font-size: 1.5rem; color: #d63e87; margin-top: 1rem;"></p>
+</section>
+
+  </div>
+</section>
+  <section id="mensaje">
+    <h2>Una Última Palabra </h2>
+    <p>En estas ultimas palabras, solo dare la brevedad de lo que eh podido sentir este mes, amor es seguro, amor es lo que eh sentido por más que me hubiese gustado limitarme con tigo, pero me as demostrado que puedo confiar, más de lo que me hubiese gustado hacerlo, y si, puede que no te vea tan seguido, pero para mi ese sentimiento de amor que logro generar sin tenerte al frente mio, es algo tan inexplicable que solo me puede hacer decir, te amo, o un gracias..... y si, como me dijeron en algun momento, eres joven te falta mucho por vivir.....pues espero que lo que me falta por vivir y enriquecerme de experiencias y conocimientos, sea junto a ti...</p>
+  </section>
+  <footer>
+    Hecho con todo el amor del mundo por yio.
+  </footer>
+  <script>
+  const paginas = document.querySelectorAll(".pagina");
+  let paginaActual = 0;
+
+  function mostrarPagina(index) {
+    paginas.forEach((pag, i) => {
+      pag.classList.remove("active");
+      if (i === index) {
+        pag.classList.add("active");
+      }
+    });
+  }
+
+  document.getElementById("anterior").addEventListener("click", () => {
+    if (paginaActual > 0) {
+      paginaActual--;
+      mostrarPagina(paginaActual);
+    }
+  });
+
+  document.getElementById("siguiente").addEventListener("click", () => {
+    if (paginaActual < paginas.length - 1) {
+      paginaActual++;
+      mostrarPagina(paginaActual);
+    }
+  });
+
+  mostrarPagina(paginaActual); // Mostrar la primera página al cargar
+</script>
+
+  <script>
+    function mostrarSorpresa() {
+      document.getElementById('sorpresaBox').style.display = 'block';
+    }
+  </script>
+  <script>
+  function calcularDiasRestantes() {
+    // Fecha del próximo mesecito (por ejemplo: 20 de julio de 2025)
+    const fechaObjetivo = new Date("2025-07-20T00:00:00");
+
+    const hoy = new Date();
+    const diferencia = fechaObjetivo - hoy;
+
+    const diasRestantes = Math.ceil(diferencia / (1000 * 60 * 60 * 24));
+
+    const mensaje = diasRestantes > 0
+      ? `Faltan ${diasRestantes} día${diasRestantes === 1 ? '' : 's'} para nuestro segundo mes juntos 🥰`
+      : diasRestantes === 0
+      ? "¡Hoy cumplimos dos mesecitos! 🎉💕"
+      : "Ya pasamos el segundo mesecito... ¡a seguir sumando amor! 💗";
+
+    document.getElementById("contador").textContent = mensaje;
+  }
+
+  calcularDiasRestantes();
+</script>
+<script>
+  function reproducirCancion() {
+    const audio = document.getElementById('miAudio');
+    const btn = document.getElementById('btnPlay');
+
+    if (audio.paused) {
+      audio.play();
+      btn.textContent = "⏸️ Pausar";
+    } else {
+      audio.pause();
+      btn.textContent = "▶️ Reproducir";
+    }
+  }
+</script>
+
+</body>
+</html>
